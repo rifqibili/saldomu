@@ -7,11 +7,7 @@
     "runtime": "V2",
     "numReplicas": 1,
     "startCommand": "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT}",
-    "preDeployCommand": [
-      "chmod -R 775 storage bootstrap/cache",
-      "npm install",
-      "npm run build"
-    ],
+    "preDeployCommand": "npm install && npm run build",
     "sleepApplication": false,
     "multiRegionConfig": {
       "asia-southeast1-eqsg3a": {
