@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('verifikasi_dokumen_sop_mutus', function (Blueprint $table) {
-            // Drop the existing index (yang bukan foreign key)
-            $table->dropIndex('verifikasi_dokumen_sop_mutus_ajukan_dokumen_sop_mutu_id_foreign');
-            
-            // Tambahkan foreign key constraint yang benar dengan onDelete('cascade')
+            // Pastikan foreign key dengan nama default dihapus
+            $table->dropForeign(['ajukan_dokumen_sop_mutu_id']);
+
+            // Tambahkan ulang dengan cascade
             $table->foreign('ajukan_dokumen_sop_mutu_id')
                   ->references('id')
                   ->on('ajukan_dokumen_sop_mutus')
@@ -23,11 +23,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('verifikasi_dokumen_sop_mutus', function (Blueprint $table) {
-            // Hapus foreign key yang baru kita buat
+            // Drop FK dengan cascade
             $table->dropForeign(['ajukan_dokumen_sop_mutu_id']);
-            
-            // Tambahkan kembali index lama tanpa foreign key constraint
-            $table->index('ajukan_dokumen_sop_mutu_id', 'verifikasi_dokumen_sop_mutus_ajukan_dokumen_sop_mutu_id_foreign');
+
+            // Tambahkan FK biasa tanpa cascade (optional, tergantung kebutuhan kamu)
+            $table->foreign('ajukan_dokumen_sop_mutu_id')
+                  ->references('id')
+                  ->on('ajukan_dokumen_sop_mutus');
         });
     }
 };
